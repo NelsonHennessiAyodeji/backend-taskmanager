@@ -1,0 +1,30 @@
+{
+  "name": "backend-taskmanager",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/NelsonHennessiAyodeji/backend-taskmanager#readme",
+  "bugs": {
+    "url": "https://github.com/NelsonHennessiAyodeji/backend-taskmanager/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NelsonHennessiAyodeji/backend-taskmanager.git"
+  },
+  "license": "ISC",
+  "author": "Ayodeji Ademide Nelson",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon --exec tsx watch src/server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.2.0",
+    "express": "^5.2.1",
+    "mongoose": "^9.9.2",
+    "nodemon": "^3.1.14",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
+  }
+}
