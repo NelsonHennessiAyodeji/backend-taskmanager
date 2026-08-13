@@ -33,7 +33,7 @@ const updateTask = async (req: Request, res: Response) => {
     const rawTaskUpdates = req.body;
     const updatedTask = await Task.findOneAndUpdate(
         {_id: taskId},
-        {...rawTaskUpdates},
+        rawTaskUpdates,
         {new: true, runValidators: true},
     );
     if (updatedTask) res.json({msg: "Updated Sucessfully", updatedTask});

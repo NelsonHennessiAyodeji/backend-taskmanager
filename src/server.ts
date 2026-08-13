@@ -2,6 +2,7 @@ import { config } from 'dotenv';
 import express from 'express';
 import connectMondoDB from './database/connect';
 import taskRouter from './route/taskRoute';
+import errorHandler from './middleware/errorHandler';
 config(); // Injecting the .env data into the process.env
 
 const server = express();
@@ -11,11 +12,15 @@ const port = process.env.port || 3000
 server.use(express.json());
 server.use("/api/v1/task", taskRouter);
 
+// Error Handler
+server.use(errorHandler);
+
 // If the database fails, the system should not run
 async function startServer() {
     try {
         const mongo_uri = process.env.MONGO_URI;
-        if (mongo_uri) await connectMondoDB(mongo_uri); // Making sure the mongo_uri have a value before processing
+        // Making sure the mongo_uri have a value before processing
+        if (mongo_uri) await connectMondoDB(mongo_uri); 
         else {
             console.error("Mongo_URI has not been assigned");
             return;
