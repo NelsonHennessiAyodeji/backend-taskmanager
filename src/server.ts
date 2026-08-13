@@ -1,6 +1,7 @@
 import { config } from 'dotenv';
 import express from 'express';
 import connectMondoDB from './database/connect';
+import taskRouter from './route/taskRoute';
 config(); // Injecting the .env data into the process.env
 
 const server = express();
@@ -8,6 +9,7 @@ const port = process.env.port || 3000
 
 // For proper reading of the request contents in HTTP
 server.use(express.json());
+server.use("/api/v1/task", taskRouter);
 
 // If the database fails, the system should not run
 async function startServer() {

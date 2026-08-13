@@ -22,6 +22,6 @@ const TaskModelSchema = new mongoose.Schema({
         type: String,
         required: true,
     }
-}, {timestamps: true});
+}, {timestamps: true}); // For the update and created at time stamps
 
 export default mongoose.model("Task", TaskModelSchema);
