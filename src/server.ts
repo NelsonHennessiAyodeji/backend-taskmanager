@@ -6,6 +6,9 @@ config(); // Injecting the .env data into the process.env
 const server = express();
 const port = process.env.port || 3000
 
+// For proper reading of the request contents in HTTP
+server.use(express.json());
+
 // If the database fails, the system should not run
 async function startServer() {
     try {
