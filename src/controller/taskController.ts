@@ -30,6 +30,7 @@ const createTask = async (req: Request, res: Response) => {
 
 const updateTask = async (req: Request, res: Response) => {
     const {id: taskId} = req.params;
+    // if (!taskId) res.status(400).json({msg: "Pleaser provide a valid ID"});
     const rawTaskUpdates = req.body;
     const updatedTask = await Task.findOneAndUpdate(
         {_id: taskId},
@@ -42,6 +43,7 @@ const updateTask = async (req: Request, res: Response) => {
 
 const deleteTask = async (req: Request, res: Response) => {
     const {id: taskId} = req.params;
+    // if (!taskId) res.status(400).json({msg: "Pleaser provide a valid ID"});
     const deletedTask = await Task.findOneAndDelete({_id: taskId});
     if (deletedTask) res.json({msg: "Task deleted sucessfully"});
     else {res.status(404).json({msg: `Task with id of ${taskId} does not exist`})}
