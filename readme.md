@@ -42,33 +42,30 @@ This project was developed as part of a Backend Intern Technical Case Study.
 
 ```text
 src/
-├── controllers/
+├── controller/
 │   └── taskController.ts
 │
-├── models/
-│   └── taskModel.ts
+├── model/
+│   └── Task.ts
 │
 ├── routes/
-│   └── taskRoutes.ts
+│   └── taskRoute.ts
 │
 ├── middleware/
 │   ├── errorHandler.ts
 │   └── notFound.ts
 │
-├── config/
-│   └── db.ts
+├── database/
+│   └── connect.ts
 │
-└── index.ts
+└── server.ts
 
-.env
+.env (supposedly)
 .gitignore
 package.json
 tsconfig.json
 README.md
 ```
-
-> The exact folder and file names may vary slightly depending on the implementation.
-
 ---
 
 # Getting Started
@@ -88,7 +85,7 @@ Make sure the following are installed:
 Clone the repository:
 
 ```bash
-git clone <YOUR-GITHUB-REPOSITORY-URL>
+git clone https://github.com/NelsonHennessiAyodeji/backend-taskmanager
 ```
 
 Navigate into the project:
@@ -110,14 +107,12 @@ npm install
 Create a `.env` file in the root of the project.
 
 ```env
-PORT=3000
 MONGO_URI=your_mongodb_connection_string
 ```
 
 Example:
 
 ```env
-PORT=3000
 MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/task-manager
 ```
 
@@ -170,7 +165,7 @@ npm start
 ## Base URL
 
 ```text
-http://localhost:3000
+http://localhost:3000/api/v1/task
 ```
 
 The API uses JSON for request and response bodies.
@@ -186,7 +181,7 @@ A task contains the following information:
   "id": "task-id",
   "title": "Learn MongoDB",
   "description": "Study MongoDB queries and Mongoose",
-  "status": "Pending",
+  "status": "pending",
   "dueDate": "2026-08-20T18:00:00.000Z",
   "createdAt": "2026-08-13T12:00:00.000Z"
 }
@@ -208,14 +203,14 @@ A task contains the following information:
 The API supports the following task statuses:
 
 ```text
-Pending
-Completed
+pending
+completed
 ```
 
 New tasks default to:
 
 ```text
-Pending
+pending
 ```
 
 ---
@@ -224,26 +219,26 @@ Pending
 
 | Method   | Endpoint                  | Description              |
 | -------- | ------------------------- | ------------------------ |
-| `POST`   | `/tasks`                  | Create a new task        |
-| `GET`    | `/tasks`                  | Retrieve all tasks       |
-| `GET`    | `/tasks?status=Pending`   | Retrieve pending tasks   |
-| `GET`    | `/tasks?status=Completed` | Retrieve completed tasks |
-| `GET`    | `/tasks/:id`              | Retrieve one task        |
-| `PATCH`  | `/tasks/:id`              | Update a task            |
-| `DELETE` | `/tasks/:id`              | Delete a task            |
+| `POST`   | `/task`                  | Create a new task        |
+| `GET`    | `/task`                  | Retrieve all tasks       |
+| `GET`    | `/task?status=pending`   | Retrieve pending tasks   |
+| `GET`    | `/task?status=completed` | Retrieve completed tasks |
+| `GET`    | `/task/:id`              | Retrieve one task        |
+| `PATCH`  | `/task/:id`              | Update a task            |
+| `DELETE` | `/task/:id`              | Delete a task            |
 
 ---
 
 # 1. Create a Task
 
-## POST `/tasks`
+## POST `/task`
 
 Creates a new task.
 
 ### Request
 
 ```http
-POST /tasks
+POST /task
 Content-Type: application/json
 ```
 
@@ -253,7 +248,7 @@ Content-Type: application/json
 {
   "title": "Learn MongoDB",
   "description": "Study MongoDB queries and Mongoose",
-  "dueDate": "2026-08-20T18:00:00.000Z"
+  "dueDate": "2026-08-20"
 }
 ```
 
@@ -263,8 +258,8 @@ A status can also be supplied:
 {
   "title": "Learn MongoDB",
   "description": "Study MongoDB queries and Mongoose",
-  "status": "Pending",
-  "dueDate": "2026-08-20T18:00:00.000Z"
+  "status": "pending",
+  "dueDate": "2026-08-20"
 }
 ```
 
@@ -275,12 +270,12 @@ A status can also be supplied:
 ```json
 {
   "msg": "Created new task",
-  "task": {
+  "newTask": {
     "id": "...",
     "title": "Learn MongoDB",
     "description": "Study MongoDB queries and Mongoose",
-    "status": "Pending",
-    "dueDate": "2026-08-20T18:00:00.000Z",
+    "status": "pending",
+    "dueDate": "2026-08-20",
     "createdAt": "2026-08-13T12:00:00.000Z"
   }
 }
@@ -298,14 +293,14 @@ A status can also be supplied:
 
 # 2. Get All Tasks
 
-## GET `/tasks`
+## GET `/task`
 
 Retrieves all tasks.
 
 ### Request
 
 ```http
-GET /tasks
+GET /task
 ```
 
 ### Successful Response
@@ -318,16 +313,16 @@ GET /tasks
     "id": "...",
     "title": "Learn MongoDB",
     "description": "Study MongoDB queries",
-    "status": "Pending",
-    "dueDate": "2026-08-20T18:00:00.000Z",
+    "status": "pending",
+    "dueDate": "2026-08-20",
     "createdAt": "2026-08-13T12:00:00.000Z"
   },
   {
     "id": "...",
     "title": "Build REST API",
     "description": "Create the task management API",
-    "status": "Completed",
-    "dueDate": "2026-08-18T18:00:00.000Z",
+    "status": "completed",
+    "dueDate": "2026-08-18",
     "createdAt": "2026-08-12T10:00:00.000Z"
   }
 ]
@@ -337,20 +332,20 @@ GET /tasks
 
 # 3. Filter Tasks by Status
 
-## GET `/tasks?status=<status>`
+## GET `/task?status=<status>`
 
 Tasks can be filtered by status using a query parameter.
 
 ### Get Pending Tasks
 
 ```http
-GET /tasks?status=Pending
+GET /task?status=pending
 ```
 
 ### Get Completed Tasks
 
 ```http
-GET /tasks?status=Completed
+GET /task?status=completed
 ```
 
 The API validates the supplied status before using it as a database filter.
@@ -360,7 +355,7 @@ The API validates the supplied status before using it as a database filter.
 For example:
 
 ```http
-GET /tasks?status=Invalid
+GET /task?status=Invalid
 ```
 
 The API returns:
@@ -383,8 +378,8 @@ The API returns:
     "id": "...",
     "title": "Learn MongoDB",
     "description": "Study MongoDB queries",
-    "status": "Pending",
-    "dueDate": "2026-08-20T18:00:00.000Z",
+    "status": "pending",
+    "dueDate": "2026-08-20",
     "createdAt": "2026-08-13T12:00:00.000Z"
   }
 ]
@@ -394,14 +389,14 @@ The API returns:
 
 # 4. Get a Single Task
 
-## GET `/tasks/:id`
+## GET `/task/:id`
 
 Retrieves a specific task using its MongoDB ID.
 
 ### Request
 
 ```http
-GET /tasks/64f123456789abcdef123456
+GET /task/64f123456789abcdef123456
 ```
 
 ### Successful Response
@@ -413,8 +408,8 @@ GET /tasks/64f123456789abcdef123456
   "id": "64f123456789abcdef123456",
   "title": "Learn MongoDB",
   "description": "Study MongoDB queries",
-  "status": "Pending",
-  "dueDate": "2026-08-20T18:00:00.000Z",
+  "status": "pending",
+  "dueDate": "2026-08-20",
   "createdAt": "2026-08-13T12:00:00.000Z"
 }
 ```
@@ -439,7 +434,7 @@ the API returns:
 
 ### Non-existent ID
 
-If the ID has a valid MongoDB format but does not correspond to an existing task:
+If the ID has a valid MongoDB format but does not correspond to an existing task or the not found handler handles it:
 
 **404 Not Found**
 
@@ -453,14 +448,14 @@ If the ID has a valid MongoDB format but does not correspond to an existing task
 
 # 5. Update a Task
 
-## PATCH `/tasks/:id`
+## PATCH `/task/:id`
 
 Updates one or more properties of an existing task.
 
 ### Request
 
 ```http
-PATCH /tasks/64f123456789abcdef123456
+PATCH /task/64f123456789abcdef123456
 Content-Type: application/json
 ```
 
@@ -468,7 +463,7 @@ Content-Type: application/json
 
 ```json
 {
-  "status": "Completed"
+  "status": "completed"
 }
 ```
 
@@ -478,8 +473,8 @@ Content-Type: application/json
 {
   "title": "Learn Advanced MongoDB",
   "description": "Study advanced MongoDB queries",
-  "status": "Completed",
-  "dueDate": "2026-08-25T18:00:00.000Z"
+  "status": "completed",
+  "dueDate": "2026-08-25"
 }
 ```
 
@@ -494,8 +489,8 @@ Content-Type: application/json
     "id": "64f123456789abcdef123456",
     "title": "Learn Advanced MongoDB",
     "description": "Study advanced MongoDB queries",
-    "status": "Completed",
-    "dueDate": "2026-08-25T18:00:00.000Z",
+    "status": "completed",
+    "dueDate": "2026-08-25",
     "createdAt": "2026-08-13T12:00:00.000Z"
   }
 }
@@ -514,14 +509,14 @@ Content-Type: application/json
 
 # 6. Delete a Task
 
-## DELETE `/tasks/:id`
+## DELETE `/task/:id`
 
 Deletes a task using its ID.
 
 ### Request
 
 ```http
-DELETE /tasks/64f123456789abcdef123456
+DELETE /task/64f123456789abcdef123456
 ```
 
 ### Successful Response
@@ -603,7 +598,7 @@ returns:
 
 # Input Validation
 
-Incoming task data is validated before being accepted by the database.
+Incoming task data is validated on the mogoose layer before being accepted by the database.
 
 Validation includes:
 
@@ -612,7 +607,7 @@ Validation includes:
 - `title` has a maximum length
 - `description` is required
 - `status` must be one of the supported values
-- `dueDate` must contain a valid date value
+- `dueDate` must contain a valid date value or a string for simplicity
 - Task IDs must be valid MongoDB ObjectIds when used in ID-based endpoints
 
 This prevents malformed data from being stored in the database.
@@ -656,14 +651,14 @@ The API follows REST-oriented conventions.
 Filtering is implemented through query parameters:
 
 ```http
-GET /tasks?status=Pending
+GET /task?status=pending
 ```
 
 Rather than creating separate endpoints such as:
 
 ```text
-/tasks/pending
-/tasks/completed
+/task/pending
+/task/completed
 ```
 
 This keeps the API flexible and follows common REST API conventions.
@@ -677,7 +672,7 @@ The API can be tested with cURL, Postman, Insomnia, or another HTTP client.
 ## Create a task
 
 ```bash
-curl -X POST http://localhost:3000/tasks \
+curl -X POST http://localhost:3000/task \
   -H "Content-Type: application/json" \
   -d '{
     "title": "Complete backend challenge",
@@ -689,41 +684,41 @@ curl -X POST http://localhost:3000/tasks \
 ## Get all tasks
 
 ```bash
-curl http://localhost:3000/tasks
+curl http://localhost:3000/task
 ```
 
 ## Get pending tasks
 
 ```bash
-curl "http://localhost:3000/tasks?status=Pending"
+curl "http://localhost:3000/task?status=pending"
 ```
 
 ## Get completed tasks
 
 ```bash
-curl "http://localhost:3000/tasks?status=Completed"
+curl "http://localhost:3000/task?status=completed"
 ```
 
 ## Get a specific task
 
 ```bash
-curl http://localhost:3000/tasks/TASK_ID
+curl http://localhost:3000/task/TASK_ID
 ```
 
 ## Update a task
 
 ```bash
-curl -X PATCH http://localhost:3000/tasks/TASK_ID \
+curl -X PATCH http://localhost:3000/task/TASK_ID \
   -H "Content-Type: application/json" \
   -d '{
-    "status": "Completed"
+    "status": "completed"
   }'
 ```
 
 ## Delete a task
 
 ```bash
-curl -X DELETE http://localhost:3000/tasks/TASK_ID
+curl -X DELETE http://localhost:3000/task/TASK_ID
 ```
 
 ---
@@ -732,8 +727,8 @@ curl -X DELETE http://localhost:3000/tasks/TASK_ID
 
 The following assumptions were made during development:
 
-1. A task has two possible statuses: `Pending` and `Completed`.
-2. New tasks default to `Pending`.
+1. A task has two possible statuses: `pending` and `completed`.
+2. New tasks default to `pending`.
 3. MongoDB/Mongoose generates the unique task ID automatically.
 4. `createdAt` is generated automatically by Mongoose timestamps.
 5. Task IDs are MongoDB ObjectIds.
@@ -742,6 +737,7 @@ The following assumptions were made during development:
 8. Authentication and authorization are outside the scope of this case study because they were not specified in the requirements.
 9. A task can be partially updated using the `PATCH` endpoint.
 10. Invalid task IDs and valid but non-existent task IDs are treated as different error cases.
+11. A live version was provided even though it was not specified: 
 
 ---
 
@@ -754,7 +750,7 @@ Query parameters received through Express are not automatically typed as the app
 For example, the `status` query parameter has a broad Express/Node query type rather than automatically being recognized as:
 
 ```text
-"Pending" | "Completed"
+"pending" | "completed"
 ```
 
 The API therefore validates the supplied value before using it as a MongoDB filter.
@@ -794,22 +790,16 @@ This helped catch invalid assumptions and type mismatches during development rat
 
 If more development time were available, I would consider adding:
 
-- Pagination for `GET /tasks`
-- More advanced filtering
-- Sorting
-- Search functionality
+- Pagination for `GET /tasks` if the tasks get larger
+- More advanced filtering, sorting, and search functionality
 - Authentication and authorization
-- User accounts and task ownership
-- Automated unit tests
-- Automated integration tests
+- User accounts and task ownership for different individuals, unless it is majorly a group thing
 - API documentation using Swagger/OpenAPI
 - Request logging
-- More comprehensive request validation
-- Docker support
+- More comprehensive and advance validation with packages like joi
 - Production-oriented configuration
 - Rate limiting
-- CI/CD using GitHub Actions
-- More robust database connection/reconnection handling
+- Robust error handling for different error types for easy readability of errors
 - Improved API response consistency
 
 ---
@@ -821,18 +811,18 @@ The API can be tested using:
 - Postman
 - Insomnia
 - cURL
-- VS Code REST Client
+- VS Code REST Client like Thunder
 
 The primary functionality to test includes:
 
 ```text
-POST   /tasks
-GET    /tasks
-GET    /tasks?status=Pending
-GET    /tasks?status=Completed
-GET    /tasks/:id
-PATCH  /tasks/:id
-DELETE /tasks/:id
+POST   /task
+GET    /task
+GET    /task?status=pending
+GET    /task?status=completed
+GET    /task/:id
+PATCH  /task/:id
+DELETE /task/:id
 ```
 
 Error cases should also be tested:
@@ -860,7 +850,7 @@ Express provides a lightweight and well-established way to build REST APIs with 
 
 ## Why MongoDB?
 
-MongoDB provides a document-oriented data model that maps naturally to the task object used by this application. It also integrates well with Node.js through Mongoose.
+MongoDB provides a document-oriented data model that maps naturally to the task object used by this application. It also integrates well and FAST with Node.js through Mongoose.
 
 ## Why Mongoose?
 
@@ -868,37 +858,9 @@ Mongoose provides schema definitions, validation, models, and convenient databas
 
 ---
 
-# Future Improvements
-
-Possible future versions of the API could introduce:
-
-```text
-Authentication
-      ↓
-Users
-      ↓
-Task ownership
-      ↓
-Authorization
-      ↓
-Advanced filtering/search
-      ↓
-Pagination
-      ↓
-Automated testing
-      ↓
-API documentation
-      ↓
-CI/CD
-      ↓
-Production deployment
-```
-
----
-
 # Author
 
-**Ayodeji Nelson**
+**Ayodeji Ademide Nelson**
 
 Backend Developer
 
