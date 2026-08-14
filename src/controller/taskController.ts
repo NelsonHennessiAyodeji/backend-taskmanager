@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import Task from "../model/Task";
+import Task from "../model/Task.js";
 
 const getAllTask = async (req: Request, res: Response) => {
     // Accounting for queery paramters

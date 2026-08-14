@@ -1,9 +1,10 @@
 import { config } from 'dotenv';
 import express from 'express';
-import connectMondoDB from './database/connect';
-import taskRouter from './route/taskRoute';
-import notFound from './middleware/notFound';
-import errorHandler from './middleware/errorHandler';
+import connectMondoDB from './database/connect.js';
+import taskRouter from './route/taskRoute.js';
+import defaultPage from './middleware/defaultPage.js';
+import notFound from './middleware/notFound.js';
+import errorHandler from './middleware/errorHandler.js';
 config(); // Injecting the .env data into the process.env
 
 const server = express();
@@ -11,6 +12,7 @@ const port = process.env.port || 3000
 
 // For proper reading of the request contents in HTTP
 server.use(express.json());
+server.use("/", (defaultPage)); //For easier referencing
 server.use("/api/v1/task", taskRouter);
 
 // 404 — route wasn't found
