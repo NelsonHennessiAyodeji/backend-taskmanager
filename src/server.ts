@@ -32,7 +32,7 @@ async function startServer() {
             return;
         }
         server.listen(port, () => {
-            console.log(`Server listening on port http://localhost:${port}`);
+            console.log(`Server listening on port ${port}`);
         });
     } catch (error: unknown) {
         if (error instanceof Error) console.error(error.message);
