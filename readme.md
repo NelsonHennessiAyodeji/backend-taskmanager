@@ -738,7 +738,7 @@ The following assumptions were made during development:
 8. Authentication and authorization are outside the scope of this case study because they were not specified in the requirements.
 9. A task can be partially updated using the `PATCH` endpoint.
 10. Invalid task IDs and valid but non-existent task IDs are treated as different error cases.
-11. A live version was provided even though it was not specified: https://backend-taskmanager-opew.onrender.com/
+11. A live version was provided even though it was not specified: https://backend-taskmanager-opew.onrender.com/api/v1/task
 
 ---
 
