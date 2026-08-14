@@ -4,6 +4,8 @@ A RESTful backend API for a simple Task Management System. The API allows team m
 
 This project was developed as part of a Backend Intern Technical Case Study.
 
+Here is a live version: [https://backend-taskmanager-opew.onrender.com/api/v1/task] for a quick showcase
+
 ---
 
 ## Features
